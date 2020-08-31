@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Form from 'react-bootstrap/Form'
+
 
 class FetchSelect extends Component {
     constructor(props) {
@@ -15,32 +17,48 @@ class FetchSelect extends Component {
             method: 'GET',
             redirect: 'follow'
         })
-        const data = await response.json()
-        const str = JSON.stringify(data)
-        const json = JSON.parse(str)
-        const comp = []
-        const op =[]
+        var data = await response.json()
+        var str = JSON.stringify(data)
+        var json = JSON.parse(str)
+        var comp = []
+        var op =[]
+        var parsedData = []
         json.forEach(i => {op.push(<option value = {i["id"]}>
                 {i["title"]}
             </option>)
-            
+            parsedData.push(i)
         });
-        comp.push(<select onChange= {this.props.handler}>
-            <option value="" disabled selected hidden>Choose a Form...</option>
+        comp.push(<Form>
+            <Form.Group controlId="exampleForm.SelectCustom">
+              <Form.Control style={{marginTop:"10px",marginBottom:"10px"}} as="select" onChange= {this.props.handler} custom>
+              <option value="" disabled selected hidden>Choose a Form...</option>
             {op}
-        </select>)
+            </Form.Control>
+  </Form.Group>
+</Form>)
         
 
         this.setState({
+            parsedData:parsedData,
             options:comp,
             loading:false
         })
     }
 
     render() {
+        var ret
+        if(this.state.loading && !this.props.formPicked){
+            ret = "Getting forms"
+        }else if(!this.state.loading && !this.props.formPicked){
+            ret =this.state.options
+        }else{
+            ret = ""
+        }
+
         return (
             <div>
-                {this.state.loading ? "Getting forms" :this.state.options}
+                {ret}
+                
             </div>
         );
     }

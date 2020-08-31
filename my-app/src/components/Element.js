@@ -5,37 +5,20 @@ export default class Element extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked :this.props.checked
         };
     }
 
-    componentWillReceiveProps(newProps){
-        console.log("new props in element",this.state)
-        this.setState(()=>{
-            return{
-                checked : this.newProps.checked
-            }
-        })
-    }
-
-
-
     render() {
         return (
-            <div className="checkbox" key = {this.props.checked} style={{
+            <div className="checkbox" style={{
                 borderTopStyle: "solid",
-                borderTopColor: "#fb8016",
-                borderTopWidth: "2px",
-
+                borderTopColor: "#cc8b00",
+                borderTopWidth: "1px",
             }}>
                 <div className="input-group-prepend">
                     <label>
-                        <input type="checkbox" checked={this.state.checked} onChange={() => {
-                            this.setState(prevState=>{
-                                return{
-                                    checked : !prevState.checked
-                                }
-                            })
+                        <input type="checkbox" checked={this.props.checked} onClick={() => {
+                            this.props.handler2(this.props.n)
                             this.props.handler(this.props.id, this.props.type)
                         }
                         } />
